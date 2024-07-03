@@ -291,12 +291,12 @@ func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, config
 	}
 	fmt.Println("targetName: %s", targetName)
 	fmt.Println("configuration: %s", configuration)
-    fmt.Println("all configurations:", target.BuildConfigurationList.BuildConfigurations)
 
 	for _, target := range helper.XcProj.Proj.Targets {
 		if target.Name != targetName {
 			continue
 		}
+        fmt.Println("all configurations:", target.BuildConfigurationList.BuildConfigurations)
 
 		for _, buildConfig := range target.BuildConfigurationList.BuildConfigurations {
             fmt.Println("build configuration:", buildConfig.Name, buildConfig)
