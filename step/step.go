@@ -277,7 +277,7 @@ func infoPlistPathFromOutput(output string) string {
 }
 
 func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, configuration string) (*xcodeproj.BuildConfiguration, error) {
-	fmt.Printf("in buildConfiguration function")
+	fmt.Println("in buildConfiguration function")
 	if targetName == "" {
 		targetName = helper.MainTarget.Name
 	}
@@ -285,8 +285,8 @@ func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, config
 	if configuration == "" {
 		configuration = helper.MainTarget.BuildConfigurationList.DefaultConfigurationName
 	}
-	fmt.Printf("targetName: %v", targetName)
-	fmt.Printf("configuration: %v", configuration)
+	fmt.Println("targetName: %v", targetName)
+	fmt.Println("configuration: %v", configuration)
 
 	for _, target := range helper.XcProj.Proj.Targets {
 		if target.Name != targetName {
@@ -294,13 +294,14 @@ func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, config
 		}
 
 		for _, buildConfig := range target.BuildConfigurationList.BuildConfigurations {
-            fmt.Printf("build configuration: %s", buildConfig.Name)
+            fmt.Println("build configuration: %s, %v", buildConfig.Name, buildConfig)
 			if buildConfig.Name == configuration {
-                fmt.Printf("found build configuration, returning")
+                fmt.Println("found build configuration, returning")
 				return &buildConfig, nil
 			}
 		}
 	}
 
+    fmt.Println("not found any build configuration, returning nil")
 	return nil, fmt.Errorf("not found any build configuration, returning nil")
 }
