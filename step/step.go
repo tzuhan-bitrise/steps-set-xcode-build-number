@@ -64,6 +64,10 @@ func (u Updater) ProcessConfig() (Config, error) {
 }
 
 func (u Updater) Run(config Config) (Result, error) {
+    fmt.Println("in Run") 
+    fmt.Println("config.ProjectPath: ", config.ProjectPath) 
+    fmt.Println("config.Scheme: ", config.Scheme) 
+    fmt.Println("config.Configuration: ", config.Configuration) 
 	helper, err := projectmanager.NewProjectHelper(config.ProjectPath, config.Scheme, config.Configuration)
 	if err != nil {
 		return Result{}, err
@@ -285,8 +289,9 @@ func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, config
 	if configuration == "" {
 		configuration = helper.MainTarget.BuildConfigurationList.DefaultConfigurationName
 	}
-	fmt.Println("targetName: %v", targetName)
-	fmt.Println("configuration: %v", configuration)
+	fmt.Println("targetName: %s", targetName)
+	fmt.Println("configuration: %s", configuration)
+    fmt.Println("all configurations:", target.BuildConfigurationList.BuildConfigurations)
 
 	for _, target := range helper.XcProj.Proj.Targets {
 		if target.Name != targetName {
@@ -294,7 +299,7 @@ func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, config
 		}
 
 		for _, buildConfig := range target.BuildConfigurationList.BuildConfigurations {
-            fmt.Println("build configuration: %s, %v", buildConfig.Name, buildConfig)
+            fmt.Println("build configuration:", buildConfig.Name, buildConfig)
 			if buildConfig.Name == configuration {
                 fmt.Println("found build configuration, returning")
 				return &buildConfig, nil
