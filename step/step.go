@@ -152,16 +152,15 @@ func (u Updater) updateVersionNumbersInProject(helper *projectmanager.ProjectHel
 }
 
 func (u Updater) updateVersionNumbersInInfoPlist(helper *projectmanager.ProjectHelper, schemeName, targetName, configuration string, bundleVersion int64, shortVersion string) error {
-	u.logger.Debugf("in updateVersionNumbersInInfoPlist")
-	u.logger.Debugf("schemeName: %v", schemeName)
-	u.logger.Debugf("targetName: %v", targetName)
-	u.logger.Debugf("configuration: %v", configuration)
-	u.logger.Debugf("bundleVersion: %v", bundleVersion)
-	u.logger.Debugf("shortVersion: %v", shortVersion)
-	u.logger.Debugf("retrieving build config")
+	u.logger.Printf("in updateVersionNumbersInInfoPlist")
+	u.logger.Printf("schemeName: %v", schemeName)
+	u.logger.Printf("targetName: %v", targetName)
+	u.logger.Printf("configuration: %v", configuration)
+	u.logger.Printf("bundleVersion: %v", bundleVersion)
+	u.logger.Printf("shortVersion: %v", shortVersion)
+	u.logger.Printf("retrieving build config")
 	buildConfig, err := buildConfiguration(helper, targetName, configuration)
-	u.logger.Debugf("buildConfig: %v", string(buildConfig))
-	u.logger.Debugf("buildConfig: %+v", buildConfig)
+	u.logger.Printf("buildConfig: %+v", buildConfig)
 	if err != nil {
 	    u.logger.Debugf("error when retrieving build config")
 		return err
@@ -278,7 +277,7 @@ func infoPlistPathFromOutput(output string) string {
 }
 
 func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, configuration string) (*xcodeproj.BuildConfiguration, error) {
-	u.logger.Debugf("in buildConfiguration function")
+	fmt.Printf("in buildConfiguration function")
 	if targetName == "" {
 		targetName = helper.MainTarget.Name
 	}
@@ -286,8 +285,8 @@ func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, config
 	if configuration == "" {
 		configuration = helper.MainTarget.BuildConfigurationList.DefaultConfigurationName
 	}
-	u.logger.Debugf("targetName: %v", targetName)
-	u.logger.Debugf("configuration: %v", configuration)
+	fmt.Printf("targetName: %v", targetName)
+	fmt.Printf("configuration: %v", configuration)
 
 	for _, target := range helper.XcProj.Proj.Targets {
 		if target.Name != targetName {
@@ -295,14 +294,13 @@ func buildConfiguration(helper *projectmanager.ProjectHelper, targetName, config
 		}
 
 		for _, buildConfig := range target.BuildConfigurationList.BuildConfigurations {
-            u.logger.Debugf("build configuration: %s", buildConfig.Name)
+            fmt.Printf("build configuration: %s", buildConfig.Name)
 			if buildConfig.Name == configuration {
-                u.logger.Debugf("found build configuration, returning")
+                fmt.Printf("found build configuration, returning")
 				return &buildConfig, nil
 			}
 		}
 	}
 
-    u.logger.Debugf("not found any build configuration, returning nil")
-	return nil, fmt.Errorf("")
+	return nil, fmt.Errorf("not found any build configuration, returning nil")
 }
